@@ -1475,7 +1475,7 @@ Returns nil if none of KEYWORDS is found."
 			     (list (point)
 				   (progn
 				     (forward-char)
-				     (if (zerop (skip-chars-forward "A-Za-z@"))
+				     (if (zerop (skip-chars-forward "A-Za-z@_:"))
 					 (forward-char) ; Single-char macro.
 				       (skip-chars-forward "*"))
 				     (point))))
@@ -1615,7 +1615,7 @@ marks boundaries for searching for group ends."
 
 (defun font-latex-match-simple-command (limit)
   "Search for command like \\foo before LIMIT."
-  (TeX-re-search-forward-unescaped "\\\\[@A-Za-z]+" limit t))
+  (TeX-re-search-forward-unescaped "\\\\[@A-Za-z_:]+" limit t))
 
 (defun font-latex-match-math-env (limit)
   "Match math pattern up to LIMIT.
@@ -1831,7 +1831,7 @@ END marks boundaries for searching for quotation ends."
   "Match subscript and superscript patterns up to LIMIT."
   (when (and font-latex-fontify-script
 	     (re-search-forward "[_^] *\\([^\n\\{}]\\|\
-\\\\\\([a-zA-Z@]+\\|[^ \t\n]\\)\\|\\({\\)\\)" limit t))
+\\\\\\([a-zA-Z@_:]+\\|[^ \t\n]\\)\\|\\({\\)\\)" limit t))
     (if (font-latex-faces-present-p '(font-latex-subscript-face
 				      font-latex-superscript-face))
 	;; Apply subscript and superscript highlighting only once in
